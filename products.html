@@ -1,0 +1,337 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doggo Haven - Our Dogs</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155; 
+        }
+        .navbar {
+            background-color: #6366f1; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .nav-link {
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .nav-link:hover {
+            background-color: #4f46e5; 
+        }
+        .section-title {
+            color: #1e293b; 
+            font-weight: 800; 
+        }
+        .dog-card {
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
+            overflow: hidden; 
+            transition: transform 0.2s ease-in-out;
+        }
+        .dog-card:hover {
+            transform: translateY(-5px);
+        }
+        .dog-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover; 
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .btn-primary {
+            background-color: #6366f1; 
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px; 
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover {
+            background-color: #4f46e5; 
+            transform: translateY(-1px); 
+        }
+        .btn-secondary-outline {
+            background-color: transparent;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .btn-secondary-outline:hover {
+            background-color: #6366f1;
+            color: white;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #6366f1;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Added for modal styling */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-width: 400px;
+            text-align: center;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="navbar p-4">
+        <div class="container mx-auto flex flex-wrap items-center justify-between">
+            <a href="home.html" class="text-2xl font-extrabold text-white">Doggo Haven</a>
+            <button class="text-white lg:hidden focus:outline-none" id="menuButton">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <div class="hidden w-full lg:flex lg:items-center lg:w-auto" id="navbarContent">
+                <ul class="flex flex-col lg:flex-row lg:space-x-8 mt-4 lg:mt-0">
+                    <li><a href="home.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About Us</a></li>
+                    <li><a href="products.html" class="nav-link">Our Dogs</a></li>
+                    <li><a href="index.html" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-12">
+        <section class="text-center mb-12">
+            <h1 class="section-title text-5xl mb-4">Our Adorable Dogs</h1>
+            <p class="text-xl text-gray-700 max-w-4xl mx-auto">
+                Meet our wonderful dogs currently seeking their forever homes. Each one is unique and full of love!
+            </p>
+        </section>
+
+        <!-- Dog Listings -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <!-- Example Dog Card 1 -->
+            <div class="dog-card">
+                <img src="https://www.petplace.com/article/dogs/pet-care/dog-care/puppy-care/media_16e89029edcc85076147cda767a7cd26d98767af3.png?width=750&format=png&optimize=medium" alt="Golden Retriever puppy" class="dog-image">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Buddy - Golden Retriever</h3>
+                    <p class="text-gray-600 mb-2">
+                        A playful and friendly Golden Retriever puppy, 8 months old.
+                        <span class="font-semibold text-indigo-700">Gender: Male ♂️</span>
+                    </p>
+                    <p class="text-gray-600 mb-4">Loves fetch and cuddles. Great with kids!</p>
+                    <p class="text-lg font-bold text-gray-800 mb-4">$800</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary-outline flex-1" onclick="showModal('Added Buddy to cart!')">Add to Cart</button>
+                        <button class="btn-primary flex-1" onclick="showModal('Buying Buddy now!')">Buy Now</button>
+                        <button class="btn-secondary-outline flex-1" onclick="showDetails('Buddy', 'Golden Retriever', 'A playful and friendly Golden Retriever puppy, 8 months old. Loves fetch and cuddles. Great with kids!')">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Dog Card 2 -->
+            <div class="dog-card">
+                <img src="https://www.bpmcdn.com/f/files/abbotsford/import/2019-06/17212469_web1_Beagle_puppy_sitting_on_grass.jpg;w=960" alt="Beagle dog" class="dog-image">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Lucy - Beagle</h3>
+                    <p class="text-gray-600 mb-2">
+                        A sweet and curious 8 weeks old Beagle.
+                        <span class="font-semibold text-indigo-700">Gender: Female ♀️</span>
+                    </p>
+                    <p class="text-gray-600 mb-4">Enjoys long walks and exploring new scents.</p>
+                    <p class="text-lg font-bold text-gray-800 mb-4">$600</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary-outline flex-1" onclick="showModal('Added Lucy to cart!')">Add to Cart</button>
+                        <button class="btn-primary flex-1" onclick="showModal('Buying Lucy now!')">Buy Now</button>
+                        <button class="btn-secondary-outline flex-1" onclick="showDetails('Lucy', 'Beagle', 'A sweet and curious 8 weeks old Beagle. Enjoys long walks and exploring new scents.')">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Dog Card 3 -->
+            <div class="dog-card">
+                <img src="https://www.kybrakennels.ca/uploads/fadeshow/1570045573.jpg" alt="Siberian Husky" class="dog-image">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Max - Siberian Husky</h3>
+                    <p class="text-gray-600 mb-2">
+                        A charming and affectionate Siberian Husky.
+                        <span class="font-semibold text-indigo-700">Gender: Male ♂️</span>
+                    </p>
+                    <p class="text-gray-600 mb-4">Loves to nap and be the center of attention.</p>
+                    <p class="text-lg font-bold text-gray-800 mb-4">$900</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary-outline flex-1" onclick="showModal('Added Max to cart!')">Add to Cart</button>
+                        <button class="btn-primary flex-1" onclick="showModal('Buying Max now!')">Buy Now</button>
+                        <button class="btn-secondary-outline flex-1" onclick="showDetails('Max', 'Siberian Husky', 'A charming and affectionate Siberian Husky. Loves to nap and be the center of attention.')">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Dog Card 4 -->
+            <div class="dog-card">
+                <img src="https://cdn.shopify.com/s/files/1/2456/1591/files/dreamstime_l_2190119_005ee106-a21c-443e-b694-7fdf6acf76f6_480x480.jpg?v=1649430620" alt="German Shepherd dog" class="dog-image">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Rex - German Shepherd</h3>
+                    <p class="text-gray-600 mb-2">
+                        A loyal and intelligent 8 weeks old German Shepherd.
+                        <span class="font-semibold text-indigo-700">Gender: Male ♂️</span>
+                    </p>
+                    <p class="text-gray-600 mb-4">Needs an active home with plenty of space.</p>
+                    <p class="text-lg font-bold text-gray-800 mb-4">$850</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary-outline flex-1" onclick="showModal('Added Rex to cart!')">Add to Cart</button>
+                        <button class="btn-primary flex-1" onclick="showModal('Buying Rex now!')">Buy Now</button>
+                        <button class="btn-secondary-outline flex-1" onclick="showDetails('Rex', 'German Shepherd', 'A loyal and intelligent 8 weeks old German Shepherd. Needs an active home with plenty of space.')">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Dog Card 5 -->
+            <div class="dog-card">
+                <img src="https://www.labradortraininghq.com/wp-content/uploads/chocolate-lab-puppy.jpg" alt="Labrador dog" class="dog-image">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Daisy - Labrador</h3>
+                    <p class="text-gray-600 mb-2">
+                        A sweet and energetic 8 weeks old Labrador.
+                        <span class="font-semibold text-indigo-700">Gender: Female ♀️</span>
+                    </p>
+                    <p class="text-gray-600 mb-4">Loves swimming and playing fetch.</p>
+                    <p class="text-lg font-bold text-gray-800 mb-4">$700</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary-outline flex-1" onclick="showModal('Added Daisy to cart!')">Add to Cart</button>
+                        <button class="btn-primary flex-1" onclick="showModal('Buying Daisy now!')">Buy Now</button>
+                        <button class="btn-secondary-outline flex-1" onclick="showDetails('Daisy', 'Labrador', 'A sweet and energetic  8 weeks old Labrador. Loves swimming and playing fetch.')">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Dog Card 6 -->
+            <div class="dog-card">
+                <img src="https://dogtime.com/wp-content/uploads/sites/12/2023/07/GettyImages-1400183580-1-e1693243782874.jpg" alt="Shih Tzu dog" class="dog-image">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Yoshi - Shih Tzu</h3>
+                    <p class="text-gray-600 mb-2">
+                        A curious and charming 9 weeks old Shih Tzu puppy.
+                        <span class="font-semibold text-indigo-700">Gender: Female ♀️</span>
+                    </p>
+                    <p class="text-gray-600 mb-4">Loves to burrow and cuddle.</p>
+                    <p class="text-lg font-bold text-gray-800 mb-4">$500</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary-outline flex-1" onclick="showModal('Added Frankie to cart!')">Add to Cart</button>
+                        <button class="btn-primary flex-1" onclick="showModal('Buying Frankie now!')">Buy Now</button>
+                        <button class="btn-secondary-outline flex-1" onclick="showDetails('Frankie', 'Dachshund', 'A curious and charming 9 weeks old Shih Tzu puppy. Loves to burrow and cuddle.')">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-6 text-center mt-auto">
+        <div class="container mx-auto">
+            <p>&copy; 2024 Doggo Haven. All rights reserved.</p>
+            <p class="text-sm mt-2">Connecting hearts, one paw at a time.</p>
+        </div>
+    </footer>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modalMessage" class="text-lg font-semibold text-gray-800"></p>
+            <button id="modalOkButton" class="btn-primary mt-4 px-6 py-2">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the modal elements
+        const modal = document.getElementById("myModal");
+        const modalMessage = document.getElementById("modalMessage");
+        const closeButton = document.getElementsByClassName("close-button")[0];
+        const modalOkButton = document.getElementById("modalOkButton");
+
+        // Function to show the modal
+        function showModal(message) {
+            modalMessage.textContent = message;
+            modal.style.display = "flex"; // Use flex to center content
+        }
+
+        // Function to show details in the modal
+        function showDetails(name, breed, description) {
+            modalMessage.innerHTML = `<strong>${name} - ${breed}</strong><br>${description}`;
+            modal.style.display = "flex"; // Use flex to center content
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks on OK button, close the modal
+        modalOkButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // JavaScript for responsive navbar toggle
+        const menuButton = document.getElementById('menuButton');
+        const navbarContent = document.getElementById('navbarContent');
+
+        menuButton.addEventListener('click', () => {
+            navbarContent.classList.toggle('hidden');
+            navbarContent.classList.toggle('flex');
+            navbarContent.classList.toggle('flex-col');
+        });
+ </script>
+</body>
+</html>
+
+
+        
